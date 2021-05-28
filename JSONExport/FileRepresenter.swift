@@ -101,7 +101,7 @@ class FileRepresenter{
         appendCustomImports()
         //start the model defination
         var definition = ""
-        if lang.modelDefinitionWithParent != nil && parentClassName.characters.count > 0{
+        if lang.modelDefinitionWithParent != nil && parentClassName.count > 0{
             definition = lang.modelDefinitionWithParent.replacingOccurrences(of: modelName, with: className)
             definition = definition.replacingOccurrences(of: modelWithParentClassName, with: parentClassName)
         }else if includeUtilities && lang.defaultParentWithUtilityMethods != nil{
@@ -129,7 +129,7 @@ class FileRepresenter{
     */
     func appendFirstLineStatement()
     {
-        if lang.supportsFirstLineStatement != nil && lang.supportsFirstLineStatement! && firstLine.characters.count > 0{
+        if lang.supportsFirstLineStatement != nil && lang.supportsFirstLineStatement! && firstLine.count > 0{
             fileContent += "\(firstLine)\n\n"
         }
     }
@@ -351,7 +351,7 @@ class FileRepresenter{
                     }
                     propertyHandlingStr = propertyHandlingStr.replacingOccurrences(of: elementType, with: property.elementsType)
                 }else{
-                    if lang.basicTypesWithSpecialStoringNeeds != nil && method.forEachPropertyWithSpecialStoringNeeds != nil && lang.basicTypesWithSpecialStoringNeeds.index(of: property.type) != nil{
+                    if lang.basicTypesWithSpecialStoringNeeds != nil && method.forEachPropertyWithSpecialStoringNeeds != nil && lang.basicTypesWithSpecialStoringNeeds.firstIndex(of: property.type) != nil{
                         propertyHandlingStr = method.forEachPropertyWithSpecialStoringNeeds
                     }else{
                         propertyHandlingStr = method.forEachProperty
@@ -369,7 +369,7 @@ class FileRepresenter{
                 
                 propertyHandlingStr = propertyHandlingStr.replacingOccurrences(of: additionalCustomTypeProperty, with:"")
                 if lang.basicTypesWithSpecialFetchingNeeds != nil{
-                    if let index = lang.basicTypesWithSpecialFetchingNeeds.index(of: property.type), let replacement = lang.basicTypesWithSpecialFetchingNeedsReplacements?[index]{
+                    if let index = lang.basicTypesWithSpecialFetchingNeeds.firstIndex(of: property.type), let replacement = lang.basicTypesWithSpecialFetchingNeedsReplacements?[index]{
                        propertyHandlingStr = propertyHandlingStr.replacingOccurrences(of: varTypeReplacement, with: replacement)
                         
                         
@@ -398,7 +398,7 @@ class FileRepresenter{
         }else{
             let basicTypes = lang.dataTypes.toDictionary().allValues as! [String]
             
-            if basicTypes.index(of: type) != nil{
+            if basicTypes.firstIndex(of: type) != nil{
                 isBasicType = true
             }
         }
@@ -419,7 +419,7 @@ class FileRepresenter{
             type = type.replacingOccurrences(of: arrayWord, with: "")
         }
         
-        if type.characters.count == 0{
+        if type.count == 0{
             type = typeNameForArrayElements(property.sampleValue as! NSArray, lang: lang)
         }
         return type
@@ -464,7 +464,7 @@ class FileRepresenter{
         if(propertyTypeIsBasicType(property)){
             
             if constructor.fetchArrayOfBasicTypePropertyFromMap != nil{
-                if let index = lang.basicTypesWithSpecialFetchingNeeds.index(of: property.elementsType){
+                if let index = lang.basicTypesWithSpecialFetchingNeeds.firstIndex(of: property.elementsType){
                     propertyStr = constructor.fetchArrayOfBasicTypePropertyFromMap
                     let replacement = lang.basicTypesWithSpecialFetchingNeedsReplacements[index]
                     propertyStr = propertyStr.replacingOccurrences(of: varTypeReplacement, with: replacement)
@@ -493,7 +493,7 @@ class FileRepresenter{
     {
         var propertyStr = ""
         if lang.basicTypesWithSpecialFetchingNeeds != nil{
-            let index = lang.basicTypesWithSpecialFetchingNeeds.index(of: property.type)
+            let index = lang.basicTypesWithSpecialFetchingNeeds.firstIndex(of: property.type)
             if index != nil{
                 propertyStr = constructor.fetchBasicTypeWithSpecialNeedsPropertyFromMap
                 if let replacement = lang.basicTypesWithSpecialFetchingNeedsReplacements?[index!]{

@@ -34,14 +34,14 @@ class FilePreviewCell: NSTableCellView, NSTextViewDelegate {
                 }
                 
                 if file.includeConstructors{
-                    constructors.state = NSOnState
+                    constructors.state = .on
                 }else{
-                    constructors.state = NSOffState
+                    constructors.state = .off
                 }
                 if file.includeUtilities{
-                    utilities.state = NSOnState
+                    utilities.state = .on
                 }else{
-                    utilities.state = NSOffState
+                    utilities.state = .off
                 }
             }else{
                 classNameLabel.stringValue = ""
@@ -66,14 +66,14 @@ class FilePreviewCell: NSTableCellView, NSTextViewDelegate {
         scrollView.hasVerticalRuler = true
         scrollView.verticalRulerView = lineNumberView
         scrollView.rulersVisible = true
-        textView.font = NSFont.userFixedPitchFont(ofSize: NSFont.smallSystemFontSize())
+        textView.font = NSFont.userFixedPitchFont(ofSize: NSFont.smallSystemFontSize)
         
     }
     
     @IBAction func toggleConstructors(_ sender: NSButtonCell)
     {
         if file != nil{
-            file.includeConstructors = (sender.state == NSOnState)
+            file.includeConstructors = (sender.state == .on)
             textView.string = file.toString()
             
         }
@@ -82,13 +82,13 @@ class FilePreviewCell: NSTableCellView, NSTextViewDelegate {
     @IBAction func toggleUtilityMethods(_ sender: NSButtonCell)
     {
         if file != nil{
-            file.includeUtilities = (sender.state == NSOnState)
+            file.includeUtilities = (sender.state == .on)
             textView.string = file.toString()
         }
     }
     
     func textDidChange(_ notification: Notification) {
-        file.fileContent = textView.string ?? file.fileContent
+        file.fileContent = textView.string
     }
     
     
